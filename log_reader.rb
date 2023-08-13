@@ -1,5 +1,3 @@
-require 'json'
-require 'securerandom'
 
 FILE_PATH = 'qgames.log'.freeze
 INIT_GAME_REGEX = /.+(InitGame:).+/
@@ -87,10 +85,30 @@ File.foreach(FILE_PATH) do |raw_log_line|
   end
 end
 
-file_path = "#{Time.now.to_i}.json"
+class PrettyJsonToFile
+  require 'json'
 
-File.open(file_path, 'wb') do |file|
-  file.write(JSON.pretty_generate(matches))
+  def initialize(data)
+    @data = data
+  end
+
+  def generate_file
+    File.open(file_name, 'wb') do |file|
+      file.write(pretty_data)
+    end
+  end
+
+  private
+
+  attr_reader :data
+
+  def file_name
+    "#{Time.now.to_i}.json"
+  end
+
+  def pretty_data
+    JSON.pretty_generate(data)
+  end
 end
 
-
+PrettyJsonToFile.new(matches).generate_file
