@@ -80,22 +80,22 @@ File.foreach(FILE_PATH) do |raw_log_line|
 
   case log_line
   when -> (line) { line.match(INIT_GAME_REGEX) } then
+    already_started_a_game = game_id > 0
+
+    if already_started_a_game
+      matches << render_match_data(
+        game_id,
+        current_match_kills,
+        players.uniq,
+        log_kills
+      )
+
+      log_kills = []
+      current_match_kills = 0
+      players = []
+    end
+
     game_id += 1
-
-    already_started_a_game = game_id < 1
-
-    next if already_started_a_game
-
-    matches << render_current_game_data(
-      game_id,
-      current_match_kills,
-      players.uniq,
-      log_kills
-    )
-
-    log_kills = []
-    current_match_kills = 0
-    players = []
   when -> (line) { line.match(KILL_REGEX) } then
     current_match_kills += 1
     log_kills << log_line.match(KILL_REGEX).to_a.drop(1)
