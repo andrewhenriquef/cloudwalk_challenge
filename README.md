@@ -6,14 +6,18 @@ Ruby version
 3.2.2
 ```
 
-This code reads and extracts the matches data and besides that creates a new file with the extracted data in json format.
-To run the code follow the steps below using your terminal:
+This code reads and extracts the matches data, besides that creates a new file with the extracted data in json format.
 
+Follow the steps below using your terminal to run the code:
+- clone the project on github,
+- Go to cloudwalk_challenge folder
+- run inside the project folder
 
-- Go to the cloudwalk_challenge folder
-- run `ruby log_reader.rb` inside the project folder
+```bash
+  ruby main.rb
+```
+
 - It generates a new file with the extracted data inside the folder
-
 
 Challenge Link
 
