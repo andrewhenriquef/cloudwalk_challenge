@@ -97,15 +97,15 @@ class LogReader
   end
 
   def count_of_players_deaths_by_world(log_kills)
-    world_kills = log_kills.select { |killer, dead, mod| killer == '<world>'}
-    world_kills_grouped_by_killed = world_kills.group_by { |item| item[1] }
+    world_kills = log_kills.select { |killer, killed, mod| killer == '<world>'}
+    world_kills_grouped_by_killed = world_kills.group_by { |killer, killed, mod| killed }
     world_kills_grouped_by_killed.map do |player, deaths_by_world|
       { player => deaths_by_world.count }
     end
   end
 
   def count_of_players_kills(log_kills)
-    player_kills = log_kills.reject { |killer, dead, mod| killer == '<world>'}
+    player_kills = log_kills.reject { |killer, killed, mod| killer == '<world>'}
     player_kills_grouped_by_killer = player_kills.group_by(&:first)
     player_kills_grouped_by_killer.map do |player, kills|
       { player => kills.count }
@@ -121,7 +121,7 @@ class LogReader
   def generate_kills_by_means(log_kills)
     return {} if log_kills.empty?
 
-    kills_grouped_by_mod = log_kills.group_by { |log_kill| log_kill[2] }
+    kills_grouped_by_mod = log_kills.group_by { |killer, killed, mod| mod }
 
     kills_by_mods = kills_grouped_by_mod.map do |mod, kills|
       { mod => kills.count }
